@@ -49,7 +49,7 @@ clock = pygame.time.Clock()
 FPS = 60
 
 current_avatar = 0
-current_level = 'normální'
+current_level = 'normal'
 
 # Funkce pro vytvoření trubek
 def create_pipe(distance):
@@ -182,6 +182,10 @@ def countdown():
         WIN.blit(countdown_text, (WIDTH // 2 - countdown_text.get_width() // 2, HEIGHT // 2 - countdown_text.get_height() // 2))
         pygame.display.update()
         pygame.time.delay(1000)
+        for event in pygame.event.get():
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
 
 # Funkce pro ukončení hry
 def game_over():
@@ -227,7 +231,7 @@ def game_menu():
         title_text = font.render("BožKOK skok", True, '#FFFF00')
         start_text = font.render("Press S to Start", True, '#FFFF00')
         settings_text = font.render("Press C for Controls", True, '#FFFF00')
-        quit_text = font.render("Press Q to Quit", True, '#FFFF00')
+        quit_text = font.render("Press Esc to escape", True, '#FFFF00')
         level_text = font.render(f"Level: {current_level}", True, '#FFFF00')
         avatar_text = font.render(f"Avatar: {current_avatar + 1}", True, '#FFFF00')
 
@@ -247,9 +251,9 @@ def game_menu():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
                     if current_level == 'jednoduchá':
-                        pipe_gap = 400
-                    elif current_level == 'normální':
                         pipe_gap = 300
+                    elif current_level == 'normální':
+                        pipe_gap = 250
                     elif current_level == 'těžká':
                         pipe_gap = 200
                     menu = False
@@ -257,7 +261,7 @@ def game_menu():
                     main()
                 if event.key == pygame.K_c:
                     controls_menu()
-                if event.key == pygame.K_q:
+                if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_l:
@@ -286,11 +290,11 @@ def choose_level():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
-                    return 'jednoduchá'
+                    return 'easy'
                 if event.key == pygame.K_2:
-                    return 'normální'
+                    return 'normal'
                 if event.key == pygame.K_3:
-                    return 'těžká'
+                    return 'hard'
 
 # Funkce pro výběr avataru
 def choose_avatar():
@@ -338,8 +342,8 @@ def controls_menu():
         controls_text = font.render("Press SPACE to fly", True, '#FFFF00')
         volume_text = font.render(f"Volume: {int(volume * 100)}%", True, '#FFFF00')
         back_text = font.render("Press B to go back", True, BLACK)
-        increase_volume_text = font.render("Press + to increase volume", True, '#FFFF00')
-        decrease_volume_text = font.render("Press - to decrease volume", True, '#FFFF00')
+        increase_volume_text = font.render("Press Up arrow to increase volume", True, '#FFFF00')
+        decrease_volume_text = font.render("Press Down arrow to decrease volume", True, '#FFFF00')
         stop_text = font.render("Press P to stop the game", True, '#FFFF00')
         level_text = font.render("Press L to choose level", True, '#FFFF00')
         avatar_text = font.render("Press A to choose avatar", True, '#FFFF00')
