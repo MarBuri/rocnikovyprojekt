@@ -14,7 +14,7 @@ game_over_music = pygame.mixer.Sound("game_over_music.mp3")
 info = pygame.display.Info()
 WIDTH, HEIGHT = info.current_w, info.current_h
 WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-pygame.display.set_caption("Flappy Bird")
+pygame.display.set_caption("BožKOK skok")
 
 # Definování barev
 WHITE = (255, 255, 255)
@@ -224,7 +224,7 @@ def game_menu():
     play_music()
     while menu:
         WIN.blit(BG_IMG, (0, 0))
-        title_text = font.render("Flappy Bird", True, '#FFFF00')
+        title_text = font.render("BožKOK skok", True, '#FFFF00')
         start_text = font.render("Press S to Start", True, '#FFFF00')
         settings_text = font.render("Press C for Controls", True, '#FFFF00')
         quit_text = font.render("Press Q to Quit", True, '#FFFF00')
