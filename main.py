@@ -169,7 +169,7 @@ def pause_game():
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-        pause_text = font.render("Paused. Press P to resume.", True, BLACK)
+        pause_text = font.render("Paused. Press P to resume.", True, '#FFFF00')
         WIN.blit(pause_text, (WIDTH // 4, HEIGHT // 2))
         pygame.display.update()
         clock.tick(5)
@@ -270,9 +270,9 @@ def choose_level():
     choosing = True
     while choosing:
         WIN.blit(BG_IMG, (0, 0))
-        easy_text = font.render("Press 1 for Easy", True, BLACK)
-        normal_text = font.render("Press 2 for Normal", True, BLACK)
-        hard_text = font.render("Press 3 for Hard", True, BLACK)
+        easy_text = font.render("Press 1 for Easy", True, '#FFFF00')
+        normal_text = font.render("Press 2 for Normal", True, '#FFFF00')
+        hard_text = font.render("Press 3 for Hard", True, '#FFFF00')
 
         WIN.blit(easy_text, (WIDTH // 2 - easy_text.get_width() // 2, HEIGHT // 2.5))
         WIN.blit(normal_text, (WIDTH // 2 - normal_text.get_width() // 2, HEIGHT // 2))
@@ -297,18 +297,19 @@ def choose_avatar():
     choosing = True
     while choosing:
         WIN.blit(BG_IMG, (0, 0))
-        avatar1_text = font.render("Press 1 for Avatar 1", True, BLACK)
-        avatar2_text = font.render("Press 2 for Avatar 2", True, BLACK)
-        avatar3_text = font.render("Press 3 for Avatar 3", True, BLACK)
-        avatar4_text = font.render("Press 4 for Avatar 4", True, BLACK)
-        avatar5_text = font.render("Press 5 for Avatar 5", True, BLACK)
 
-        WIN.blit(avatar1_text, (WIDTH // 2 - avatar1_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(avatar2_text, (WIDTH // 2 - avatar2_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(avatar3_text, (WIDTH // 2 - avatar3_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(avatar4_text, (WIDTH // 2 - avatar4_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(avatar5_text, (WIDTH // 2 - avatar5_text.get_width() // 2, HEIGHT // 2))
+        # Vykreslení textu pro výběr avatara
+        avatar1_text = font.render("Press 1 for Avatar 1", True, '#FFFF00')
+        avatar2_text = font.render("Press 2 for Avatar 2", True,'#FFFF00')
+        avatar3_text = font.render("Press 3 for Avatar 3", True, '#FFFF00')
+        avatar4_text = font.render("Press 4 for Avatar 4", True, '#FFFF00')
+        avatar5_text = font.render("Press 5 for Avatar 5", True, '#FFFF00')
 
+        # Posunutí textu pro každý avatar
+        y_offset = HEIGHT // 2
+        for avatar_text in [avatar1_text, avatar2_text, avatar3_text, avatar4_text, avatar5_text]:
+            WIN.blit(avatar_text, (WIDTH // 2 - avatar_text.get_width() // 2, y_offset))
+            y_offset += 100  # Posun o 50 pixelů dolů pro každý další text
 
         pygame.display.update()
 
@@ -334,14 +335,14 @@ def controls_menu():
     volume = pygame.mixer.music.get_volume()
     while controls:
         WIN.blit(BG_IMG, (0, 0))
-        controls_text = font.render("Press SPACE to fly", True, BLACK)
-        volume_text = font.render(f"Volume: {int(volume * 100)}%", True, BLACK)
+        controls_text = font.render("Press SPACE to fly", True, '#FFFF00')
+        volume_text = font.render(f"Volume: {int(volume * 100)}%", True, '#FFFF00')
         back_text = font.render("Press B to go back", True, BLACK)
-        increase_volume_text = font.render("Press + to increase volume", True, BLACK)
-        decrease_volume_text = font.render("Press - to decrease volume", True, BLACK)
-        stop_text = font.render("Press P to stop the game", True, BLACK)
-        level_text = font.render("Press L to choose level", True, BLACK)
-        avatar_text = font.render("Press A to choose avatar", True, BLACK)
+        increase_volume_text = font.render("Press + to increase volume", True, '#FFFF00')
+        decrease_volume_text = font.render("Press - to decrease volume", True, '#FFFF00')
+        stop_text = font.render("Press P to stop the game", True, '#FFFF00')
+        level_text = font.render("Press L to choose level", True, '#FFFF00')
+        avatar_text = font.render("Press A to choose avatar", True, '#FFFF00')
 
         WIN.blit(controls_text, (WIDTH // 2 - controls_text.get_width() // 2, HEIGHT // 5))
         WIN.blit(volume_text, (WIDTH // 2 - volume_text.get_width() // 2, HEIGHT // 4))
