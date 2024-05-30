@@ -5,7 +5,7 @@ import random
 # Inicializace Pygame
 pygame.init()
 
-#hudba
+# Hudba
 pygame.mixer.music.load("menu_music.mp3")
 game_music = pygame.mixer.Sound("game_music.mp3")
 game_over_music = pygame.mixer.Sound("game_over_music.mp3")
@@ -23,23 +23,22 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
 # Načtení obrázků
-BIRD_IMG = pygame.image.load('ptak.png').convert_alpha()
-BIRD_IMG = pygame.transform.scale(BIRD_IMG, (100, 100))  # Zvětšení ptáka
-BG_IMG = pygame.image.load('pozadi.jpg').convert()
+AVATARS = ['avatar1.png', 'avatar2.png', 'avatar3.png','avatar4.png','avatar5.png']  # Přidány další avatary
+BG_IMG = pygame.image.load('pozadi1.jpg').convert()
 BG_IMG = pygame.transform.scale(BG_IMG, (WIDTH, HEIGHT))
 
 # Herní proměnné
 bird_x = 50
 bird_y = HEIGHT // 2
-bird_width = 100  # Nová velikost ptáka
-bird_height = 100  # Nová velikost ptáka
+bird_width = 100
+bird_height = 100
 bird_speed = 0
 gravity = 0.5
 jump = -10
 
 pipe_width = 70
-pipe_gap = 300  # Zvětšení mezery mezi trubkami
-pipe_distance = 400  # Zmenšení vzdálenosti mezi trubkami pro zvýšení obtížnosti
+pipe_gap = 300
+pipe_distance = 400
 pipes = []
 
 score = 0
@@ -48,6 +47,9 @@ font = pygame.font.Font(None, 72)
 
 clock = pygame.time.Clock()
 FPS = 60
+
+current_avatar = 0
+current_level = 'normální'
 
 # Funkce pro vytvoření trubek
 def create_pipe(distance):
@@ -67,6 +69,8 @@ def move_pipes(pipes):
 # Funkce pro vykreslení okna
 def draw_window():
     WIN.blit(BG_IMG, (0, 0))
+    BIRD_IMG = pygame.image.load(AVATARS[current_avatar]).convert_alpha()
+    BIRD_IMG = pygame.transform.scale(BIRD_IMG, (100, 100))
     WIN.blit(BIRD_IMG, (bird_x, bird_y))
 
     for top_pipe, bottom_pipe in pipes:
@@ -101,7 +105,7 @@ def update_score():
 
 # Funkce pro hlavní herní smyčku
 def main():
-    global bird_y, bird_speed, pipes, score, high_score, passed_pipes
+    global bird_y, bird_speed, pipes, score, high_score, passed_pipes, pipe_gap
 
     bird_y = HEIGHT // 2
     bird_speed = 0
@@ -174,7 +178,7 @@ def pause_game():
 def countdown():
     for i in range(3, 0, -1):
         WIN.blit(BG_IMG, (0, 0))
-        countdown_text = font.render(str(i), True, BLACK)
+        countdown_text = font.render(str(i), True, '#FFFF00')
         WIN.blit(countdown_text, (WIDTH // 2 - countdown_text.get_width() // 2, HEIGHT // 2 - countdown_text.get_height() // 2))
         pygame.display.update()
         pygame.time.delay(1000)
@@ -189,9 +193,9 @@ def game_over():
         high_score = score
     while over:
         WIN.blit(BG_IMG, (0, 0))
-        game_over_text = font.render("Game Over", True, BLACK)
-        retry_text = font.render("Press R to Retry", True, BLACK)
-        menu_text = font.render("Press M for Menu", True, BLACK)
+        game_over_text = font.render("Game Over", True, '#FFFF00')
+        retry_text = font.render("Press R to Retry", True, '#FFFF00')
+        menu_text = font.render("Press M for Menu", True, '#FFFF00')
         WIN.blit(game_over_text, (WIDTH // 2 - game_over_text.get_width() // 2, HEIGHT // 3))
         WIN.blit(retry_text, (WIDTH // 2 - retry_text.get_width() // 2, HEIGHT // 2))
         WIN.blit(menu_text, (WIDTH // 2 - menu_text.get_width() // 2, HEIGHT // 1.5))
@@ -215,18 +219,23 @@ def game_over():
 
 # Funkce pro menu
 def game_menu():
+    global current_level, current_avatar, pipe_gap
     menu = True
     play_music()
     while menu:
         WIN.blit(BG_IMG, (0, 0))
-        title_text = font.render("Fluffy Bird", True, BLACK)
-        start_text = font.render("Press S to Start", True, BLACK)
-        settings_text = font.render("Press C for Controls", True, BLACK)
-        quit_text = font.render("Press Q to Quit", True, BLACK)
+        title_text = font.render("Flappy Bird", True, '#FFFF00')
+        start_text = font.render("Press S to Start", True, '#FFFF00')
+        settings_text = font.render("Press C for Controls", True, '#FFFF00')
+        quit_text = font.render("Press Q to Quit", True, '#FFFF00')
+        level_text = font.render(f"Level: {current_level}", True, '#FFFF00')
+        avatar_text = font.render(f"Avatar: {current_avatar + 1}", True, '#FFFF00')
 
         WIN.blit(title_text, (WIDTH // 2 - title_text.get_width() // 2, HEIGHT // 4))
         WIN.blit(start_text, (WIDTH // 2 - start_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(settings_text, (WIDTH // 2 - settings_text.get_width() // 2, HEIGHT // 1.5))
+        WIN.blit(level_text, (WIDTH // 2 - level_text.get_width() // 2, HEIGHT // 1.8))
+        WIN.blit(avatar_text, (WIDTH // 2 - avatar_text.get_width() // 2, HEIGHT // 1.6))
+        WIN.blit(settings_text, (WIDTH // 2 - settings_text.get_width() // 2, HEIGHT // 1.4))
         WIN.blit(quit_text, (WIDTH // 2 - quit_text.get_width() // 2, HEIGHT // 1.2))
 
         pygame.display.update()
@@ -237,6 +246,12 @@ def game_menu():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
+                    if current_level == 'jednoduchá':
+                        pipe_gap = 400
+                    elif current_level == 'normální':
+                        pipe_gap = 300
+                    elif current_level == 'těžká':
+                        pipe_gap = 200
                     menu = False
                     countdown()
                     main()
@@ -245,6 +260,73 @@ def game_menu():
                 if event.key == pygame.K_q:
                     pygame.quit()
                     sys.exit()
+                if event.key == pygame.K_l:
+                    current_level = choose_level()
+                if event.key == pygame.K_a:
+                    current_avatar = choose_avatar()
+
+# Funkce pro výběr obtížnosti
+def choose_level():
+    choosing = True
+    while choosing:
+        WIN.blit(BG_IMG, (0, 0))
+        easy_text = font.render("Press 1 for Easy", True, BLACK)
+        normal_text = font.render("Press 2 for Normal", True, BLACK)
+        hard_text = font.render("Press 3 for Hard", True, BLACK)
+
+        WIN.blit(easy_text, (WIDTH // 2 - easy_text.get_width() // 2, HEIGHT // 2.5))
+        WIN.blit(normal_text, (WIDTH // 2 - normal_text.get_width() // 2, HEIGHT // 2))
+        WIN.blit(hard_text, (WIDTH // 2 - hard_text.get_width() // 2, HEIGHT // 1.5))
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    return 'jednoduchá'
+                if event.key == pygame.K_2:
+                    return 'normální'
+                if event.key == pygame.K_3:
+                    return 'těžká'
+
+# Funkce pro výběr avataru
+def choose_avatar():
+    choosing = True
+    while choosing:
+        WIN.blit(BG_IMG, (0, 0))
+        avatar1_text = font.render("Press 1 for Avatar 1", True, BLACK)
+        avatar2_text = font.render("Press 2 for Avatar 2", True, BLACK)
+        avatar3_text = font.render("Press 3 for Avatar 3", True, BLACK)
+        avatar4_text = font.render("Press 4 for Avatar 4", True, BLACK)
+        avatar5_text = font.render("Press 5 for Avatar 5", True, BLACK)
+
+        WIN.blit(avatar1_text, (WIDTH // 2 - avatar1_text.get_width() // 2, HEIGHT // 2))
+        WIN.blit(avatar2_text, (WIDTH // 2 - avatar2_text.get_width() // 2, HEIGHT // 2))
+        WIN.blit(avatar3_text, (WIDTH // 2 - avatar3_text.get_width() // 2, HEIGHT // 2))
+        WIN.blit(avatar4_text, (WIDTH // 2 - avatar4_text.get_width() // 2, HEIGHT // 2))
+        WIN.blit(avatar5_text, (WIDTH // 2 - avatar5_text.get_width() // 2, HEIGHT // 2))
+
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    return 0
+                if event.key == pygame.K_2:
+                    return 1
+                if event.key == pygame.K_3:
+                    return 2
+                if event.key == pygame.K_4:
+                    return 3
+                if event.key == pygame.K_5:
+                    return 4
 
 # Funkce pro menu s ovládáním
 def controls_menu():
@@ -257,13 +339,17 @@ def controls_menu():
         back_text = font.render("Press B to go back", True, BLACK)
         increase_volume_text = font.render("Press + to increase volume", True, BLACK)
         decrease_volume_text = font.render("Press - to decrease volume", True, BLACK)
-        stop_text = font.render("Press P to stop the game", True, BLACK)  # Přidáno tlačítko pro zastavení hry
+        stop_text = font.render("Press P to stop the game", True, BLACK)
+        level_text = font.render("Press L to choose level", True, BLACK)
+        avatar_text = font.render("Press A to choose avatar", True, BLACK)
 
         WIN.blit(controls_text, (WIDTH // 2 - controls_text.get_width() // 2, HEIGHT // 5))
         WIN.blit(volume_text, (WIDTH // 2 - volume_text.get_width() // 2, HEIGHT // 4))
         WIN.blit(increase_volume_text, (WIDTH // 2 - increase_volume_text.get_width() // 2, HEIGHT // 3))
         WIN.blit(decrease_volume_text, (WIDTH // 2 - decrease_volume_text.get_width() // 2, HEIGHT // 2.5))
-        WIN.blit(stop_text, (WIDTH // 2 - stop_text.get_width() // 2, HEIGHT // 2))  # Zobrazení tlačítka pro zastavení hry
+        WIN.blit(stop_text, (WIDTH // 2 - stop_text.get_width() // 2, HEIGHT // 2))
+        WIN.blit(level_text, (WIDTH // 2 - level_text.get_width() // 2, HEIGHT // 1.8))
+        WIN.blit(avatar_text, (WIDTH // 2 - avatar_text.get_width() // 2, HEIGHT // 1.6))
         WIN.blit(back_text, (WIDTH // 2 - back_text.get_width() // 2, HEIGHT // 1.2))
 
         pygame.display.update()
@@ -281,8 +367,6 @@ def controls_menu():
                 if event.key == pygame.K_DOWN:
                     volume = max(0, volume - 0.1)
                     pygame.mixer.music.set_volume(volume)
-                if event.key == pygame.K_p:  # Zastavení hry
-                    controls = False
 
 # Hlavní funkce pro přehrávání hudby
 def play_music():
