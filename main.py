@@ -14,7 +14,7 @@ game_over_music = pygame.mixer.Sound("game_over_music.mp3")
 info = pygame.display.Info()
 WIDTH, HEIGHT = info.current_w, info.current_h
 WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-pygame.display.set_caption("BožKOK skok")
+pygame.display.set_caption("Flappy Bird")
 
 # Definování barev
 WHITE = (255, 255, 255)
@@ -49,7 +49,7 @@ clock = pygame.time.Clock()
 FPS = 60
 
 current_avatar = 0
-current_level = 'normal'
+current_level = 'normální'
 
 # Funkce pro vytvoření trubek
 def create_pipe(distance):
@@ -182,10 +182,6 @@ def countdown():
         WIN.blit(countdown_text, (WIDTH // 2 - countdown_text.get_width() // 2, HEIGHT // 2 - countdown_text.get_height() // 2))
         pygame.display.update()
         pygame.time.delay(1000)
-        for event in pygame.event.get():
-            if event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
 
 # Funkce pro ukončení hry
 def game_over():
@@ -228,10 +224,10 @@ def game_menu():
     play_music()
     while menu:
         WIN.blit(BG_IMG, (0, 0))
-        title_text = font.render("BožKOK skok", True, '#FFFF00')
+        title_text = font.render("Flappy Bird", True, '#FFFF00')
         start_text = font.render("Press S to Start", True, '#FFFF00')
         settings_text = font.render("Press C for Controls", True, '#FFFF00')
-        quit_text = font.render("Press Esc to escape", True, '#FFFF00')
+        quit_text = font.render("Press Q to Quit", True, '#FFFF00')
         level_text = font.render(f"Level: {current_level}", True, '#FFFF00')
         avatar_text = font.render(f"Avatar: {current_avatar + 1}", True, '#FFFF00')
 
@@ -250,18 +246,18 @@ def game_menu():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    if current_level == 'jednoduchá':
+                    if current_level == 'easy':
                         pipe_gap = 300
-                    elif current_level == 'normální':
+                    elif current_level == 'normal':
                         pipe_gap = 250
-                    elif current_level == 'těžká':
+                    elif current_level == 'hard':
                         pipe_gap = 200
                     menu = False
                     countdown()
                     main()
                 if event.key == pygame.K_c:
                     controls_menu()
-                if event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_q:
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_l:
@@ -296,24 +292,22 @@ def choose_level():
                 if event.key == pygame.K_3:
                     return 'hard'
 
-# Funkce pro výběr avataru
 def choose_avatar():
     choosing = True
     while choosing:
         WIN.blit(BG_IMG, (0, 0))
-
-        # Vykreslení textu pro výběr avatara
+        
         avatar1_text = font.render("Press 1 for Avatar 1", True, '#FFFF00')
-        avatar2_text = font.render("Press 2 for Avatar 2", True,'#FFFF00')
+        avatar2_text = font.render("Press 2 for Avatar 2", True, '#FFFF00')
         avatar3_text = font.render("Press 3 for Avatar 3", True, '#FFFF00')
         avatar4_text = font.render("Press 4 for Avatar 4", True, '#FFFF00')
         avatar5_text = font.render("Press 5 for Avatar 5", True, '#FFFF00')
 
-        # Posunutí textu pro každý avatar
-        y_offset = HEIGHT // 2
-        for avatar_text in [avatar1_text, avatar2_text, avatar3_text, avatar4_text, avatar5_text]:
-            WIN.blit(avatar_text, (WIDTH // 2 - avatar_text.get_width() // 2, y_offset))
-            y_offset += 100  # Posun o 50 pixelů dolů pro každý další text
+        WIN.blit(avatar1_text, (WIDTH // 2 - avatar1_text.get_width() // 2, HEIGHT // 2 - 100))
+        WIN.blit(avatar2_text, (WIDTH // 2 - avatar2_text.get_width() // 2, HEIGHT // 2 - 50))
+        WIN.blit(avatar3_text, (WIDTH // 2 - avatar3_text.get_width() // 2, HEIGHT // 2))
+        WIN.blit(avatar4_text, (WIDTH // 2 - avatar4_text.get_width() // 2, HEIGHT // 2 + 50))
+        WIN.blit(avatar5_text, (WIDTH // 2 - avatar5_text.get_width() // 2, HEIGHT // 2 + 100))
 
         pygame.display.update()
 
@@ -333,6 +327,7 @@ def choose_avatar():
                 if event.key == pygame.K_5:
                     return 4
 
+
 # Funkce pro menu s ovládáním
 def controls_menu():
     controls = True
@@ -341,9 +336,9 @@ def controls_menu():
         WIN.blit(BG_IMG, (0, 0))
         controls_text = font.render("Press SPACE to fly", True, '#FFFF00')
         volume_text = font.render(f"Volume: {int(volume * 100)}%", True, '#FFFF00')
-        back_text = font.render("Press B to go back", True, BLACK)
-        increase_volume_text = font.render("Press Up arrow to increase volume", True, '#FFFF00')
-        decrease_volume_text = font.render("Press Down arrow to decrease volume", True, '#FFFF00')
+        back_text = font.render("Press B to go back", True, '#FFFF00')
+        increase_volume_text = font.render("Press + to increase volume", True, '#FFFF00')
+        decrease_volume_text = font.render("Press - to decrease volume", True, '#FFFF00')
         stop_text = font.render("Press P to stop the game", True, '#FFFF00')
         level_text = font.render("Press L to choose level", True, '#FFFF00')
         avatar_text = font.render("Press A to choose avatar", True, '#FFFF00')
