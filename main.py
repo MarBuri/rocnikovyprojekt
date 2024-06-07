@@ -14,7 +14,7 @@ game_over_music = pygame.mixer.Sound("game_over_music.mp3")
 info = pygame.display.Info()
 WIDTH, HEIGHT = info.current_w, info.current_h
 WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-pygame.display.set_caption("Flappy Bird")
+pygame.display.set_caption("BožKOK skok")
 
 # Definování barev
 WHITE = (255, 255, 255)
@@ -121,9 +121,6 @@ def main():
     while running:
         clock.tick(FPS)
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     bird_speed = jump
@@ -160,9 +157,6 @@ def pause_game():
     paused = True
     while paused:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     paused = False
@@ -193,18 +187,15 @@ def game_over():
         high_score = score
     while over:
         WIN.blit(BG_IMG, (0, 0))
-        game_over_text = font.render("Game Over", True, '#FFFF00')
+        game_over_text = font.render("Game Over", True, '#ff0000')
         retry_text = font.render("Press R to Retry", True, '#FFFF00')
         menu_text = font.render("Press M for Menu", True, '#FFFF00')
-        WIN.blit(game_over_text, (WIDTH // 2 - game_over_text.get_width() // 2, HEIGHT // 3))
-        WIN.blit(retry_text, (WIDTH // 2 - retry_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(menu_text, (WIDTH // 2 - menu_text.get_width() // 2, HEIGHT // 1.5))
+        WIN.blit(game_over_text, (WIDTH // 2 - game_over_text.get_width() // 2, HEIGHT -625))
+        WIN.blit(retry_text, (WIDTH // 2 - retry_text.get_width() // 2, HEIGHT -450))
+        WIN.blit(menu_text, (WIDTH // 2 - menu_text.get_width() // 2, HEIGHT -375))
         pygame.display.update()
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
                     over = False
@@ -224,26 +215,23 @@ def game_menu():
     play_music()
     while menu:
         WIN.blit(BG_IMG, (0, 0))
-        title_text = font.render("Flappy Bird", True, '#FFFF00')
+        title_text = font.render("BožKOK skok", True, '#ff0000')
         start_text = font.render("Press S to Start", True, '#FFFF00')
         settings_text = font.render("Press C for Controls", True, '#FFFF00')
-        quit_text = font.render("Press Q to Quit", True, '#FFFF00')
+        quit_text = font.render("Press ESC to Quit", True, '#FFFF00')
         level_text = font.render(f"Level: {current_level}", True, '#FFFF00')
         avatar_text = font.render(f"Avatar: {current_avatar + 1}", True, '#FFFF00')
 
-        WIN.blit(title_text, (WIDTH // 2 - title_text.get_width() // 2, HEIGHT // 4))
-        WIN.blit(start_text, (WIDTH // 2 - start_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(level_text, (WIDTH // 2 - level_text.get_width() // 2, HEIGHT // 1.8))
-        WIN.blit(avatar_text, (WIDTH // 2 - avatar_text.get_width() // 2, HEIGHT // 1.6))
-        WIN.blit(settings_text, (WIDTH // 2 - settings_text.get_width() // 2, HEIGHT // 1.4))
-        WIN.blit(quit_text, (WIDTH // 2 - quit_text.get_width() // 2, HEIGHT // 1.2))
+        WIN.blit(title_text, (WIDTH // 2 - title_text.get_width() // 2, HEIGHT -825))
+        WIN.blit(start_text, (WIDTH // 2 - start_text.get_width() // 2, HEIGHT -700))
+        WIN.blit(level_text, (WIDTH // 2 - level_text.get_width() // 2, HEIGHT -625))
+        WIN.blit(avatar_text, (WIDTH // 2 - avatar_text.get_width() // 2, HEIGHT -550))
+        WIN.blit(settings_text, (WIDTH // 2 - settings_text.get_width() // 2, HEIGHT -475))
+        WIN.blit(quit_text, (WIDTH // 2 - quit_text.get_width() // 2, HEIGHT -400))
 
         pygame.display.update()
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
                     if current_level == 'easy':
@@ -257,7 +245,7 @@ def game_menu():
                     main()
                 if event.key == pygame.K_c:
                     controls_menu()
-                if event.key == pygame.K_q:
+                if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_l:
@@ -274,23 +262,27 @@ def choose_level():
         normal_text = font.render("Press 2 for Normal", True, '#FFFF00')
         hard_text = font.render("Press 3 for Hard", True, '#FFFF00')
 
-        WIN.blit(easy_text, (WIDTH // 2 - easy_text.get_width() // 2, HEIGHT // 2.5))
-        WIN.blit(normal_text, (WIDTH // 2 - normal_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(hard_text, (WIDTH // 2 - hard_text.get_width() // 2, HEIGHT // 1.5))
+        WIN.blit(easy_text, (WIDTH // 2 - easy_text.get_width() // 2, HEIGHT - 700))
+        WIN.blit(normal_text, (WIDTH // 2 - normal_text.get_width() // 2, HEIGHT - 625))
+        WIN.blit(hard_text, (WIDTH // 2 - hard_text.get_width() // 2, HEIGHT - 550))
 
         pygame.display.update()
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_b:
+                    choosing = False
+                    game_menu()
                 if event.key == pygame.K_1:
                     return 'easy'
                 if event.key == pygame.K_2:
                     return 'normal'
                 if event.key == pygame.K_3:
                     return 'hard'
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+                    
 
 def choose_avatar():
     choosing = True
@@ -303,19 +295,19 @@ def choose_avatar():
         avatar4_text = font.render("Press 4 for Avatar 4", True, '#FFFF00')
         avatar5_text = font.render("Press 5 for Avatar 5", True, '#FFFF00')
 
-        WIN.blit(avatar1_text, (WIDTH // 2 - avatar1_text.get_width() // 2, HEIGHT // 2 - 100))
-        WIN.blit(avatar2_text, (WIDTH // 2 - avatar2_text.get_width() // 2, HEIGHT // 2 - 50))
-        WIN.blit(avatar3_text, (WIDTH // 2 - avatar3_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(avatar4_text, (WIDTH // 2 - avatar4_text.get_width() // 2, HEIGHT // 2 + 50))
-        WIN.blit(avatar5_text, (WIDTH // 2 - avatar5_text.get_width() // 2, HEIGHT // 2 + 100))
+        WIN.blit(avatar1_text, (WIDTH // 2 - avatar1_text.get_width() // 2, HEIGHT -700))
+        WIN.blit(avatar2_text, (WIDTH // 2 - avatar2_text.get_width() // 2, HEIGHT -625))
+        WIN.blit(avatar3_text, (WIDTH // 2 - avatar3_text.get_width() // 2, HEIGHT -550))
+        WIN.blit(avatar4_text, (WIDTH // 2 - avatar4_text.get_width() // 2, HEIGHT -475))
+        WIN.blit(avatar5_text, (WIDTH // 2 - avatar5_text.get_width() // 2, HEIGHT -400))
 
         pygame.display.update()
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_b:
+                    choosing = False
+                    game_menu()
                 if event.key == pygame.K_1:
                     return 0
                 if event.key == pygame.K_2:
@@ -326,6 +318,9 @@ def choose_avatar():
                     return 3
                 if event.key == pygame.K_5:
                     return 4
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
 
 
 # Funkce pro menu s ovládáním
@@ -337,27 +332,24 @@ def controls_menu():
         controls_text = font.render("Press SPACE to fly", True, '#FFFF00')
         volume_text = font.render(f"Volume: {int(volume * 100)}%", True, '#FFFF00')
         back_text = font.render("Press B to go back", True, '#FFFF00')
-        increase_volume_text = font.render("Press + to increase volume", True, '#FFFF00')
-        decrease_volume_text = font.render("Press - to decrease volume", True, '#FFFF00')
+        increase_volume_text = font.render("Press UP arrow to increase volume", True, '#FFFF00')
+        decrease_volume_text = font.render("Press DOWN arrow to decrease volume", True, '#FFFF00')
         stop_text = font.render("Press P to stop the game", True, '#FFFF00')
         level_text = font.render("Press L to choose level", True, '#FFFF00')
         avatar_text = font.render("Press A to choose avatar", True, '#FFFF00')
 
-        WIN.blit(controls_text, (WIDTH // 2 - controls_text.get_width() // 2, HEIGHT // 5))
-        WIN.blit(volume_text, (WIDTH // 2 - volume_text.get_width() // 2, HEIGHT // 4))
-        WIN.blit(increase_volume_text, (WIDTH // 2 - increase_volume_text.get_width() // 2, HEIGHT // 3))
-        WIN.blit(decrease_volume_text, (WIDTH // 2 - decrease_volume_text.get_width() // 2, HEIGHT // 2.5))
-        WIN.blit(stop_text, (WIDTH // 2 - stop_text.get_width() // 2, HEIGHT // 2))
-        WIN.blit(level_text, (WIDTH // 2 - level_text.get_width() // 2, HEIGHT // 1.8))
-        WIN.blit(avatar_text, (WIDTH // 2 - avatar_text.get_width() // 2, HEIGHT // 1.6))
-        WIN.blit(back_text, (WIDTH // 2 - back_text.get_width() // 2, HEIGHT // 1.2))
+        WIN.blit(controls_text, (WIDTH // 2 - controls_text.get_width() // 2, HEIGHT -900))
+        WIN.blit(volume_text, (WIDTH // 2 - volume_text.get_width() // 2, HEIGHT -700))
+        WIN.blit(increase_volume_text, (WIDTH // 2 - increase_volume_text.get_width() // 2, HEIGHT -625))
+        WIN.blit(decrease_volume_text, (WIDTH // 2 - decrease_volume_text.get_width() // 2, HEIGHT -550))
+        WIN.blit(stop_text, (WIDTH // 2 - stop_text.get_width() // 2, HEIGHT -475))
+        WIN.blit(level_text, (WIDTH // 2 - level_text.get_width() // 2, HEIGHT -400))
+        WIN.blit(avatar_text, (WIDTH // 2 - avatar_text.get_width() // 2, HEIGHT -325))
+        WIN.blit(back_text, (WIDTH // 2 - back_text.get_width() // 2, HEIGHT -250))
 
         pygame.display.update()
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_b:
                     controls = False
@@ -367,6 +359,10 @@ def controls_menu():
                 if event.key == pygame.K_DOWN:
                     volume = max(0, volume - 0.1)
                     pygame.mixer.music.set_volume(volume)
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+                    
 
 # Hlavní funkce pro přehrávání hudby
 def play_music():
